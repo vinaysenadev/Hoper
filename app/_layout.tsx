@@ -1,18 +1,26 @@
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { Text, View } from "react-native";
+import { Stack } from "expo-router";
+import { Platform, Text, View } from "react-native";
 import "react-native-reanimated";
 import "../global.css";
 
 export const unstable_settings = {
-  anchor: "(tabs)",
+  // anchor: "(tabs)",
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  if (Platform.OS === "web") {
+    // Web layout
+    return (
+      <View style={{ flex: 1 }}>
+        <Text>Web Layout</Text>
+      </View>
+    );
+  }
 
+  // Mobile layout
   return (
-    <View className="flex-1 items-center justify-center bg-white dark:bg-black">
-      <Text className="font-bold text-2xl bg-red-500">HHHello welcome hopper</Text>
-    </View>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+    </Stack>
   );
 }
