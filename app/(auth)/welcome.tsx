@@ -52,15 +52,17 @@ const Onboarding = () => {
           );
         })}
       </Swiper>
-      <CustomButton
-        title={isLastScreen ? "Get Started" : "Next"}
-        onPress={() =>
-          isLastScreen
-            ? router.replace("/(auth)/sign-up")
-            : swipwerRef.current?.scrollBy(1)
-        }
-        className="w-11/12 mt-10"
-      />
+      <View className="w-full flex items-center mb-10 px-10">
+        <CustomButton
+          title={isLastScreen ? "Get Started" : "Next"}
+          onPress={() =>
+            isLastScreen
+              ? router.replace("/(auth)/sign-up")
+              : swipwerRef.current?.scrollBy(1)
+          }
+          className="w-11/12 mt-10"
+        />
+      </View>
     </SafeAreaView>
   );
 };

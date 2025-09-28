@@ -1,17 +1,19 @@
 import { useFonts } from "expo-font";
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { Platform } from "react-native";
 import "react-native-reanimated";
 import "../global.css";
+
+import { ClerkProvider } from "@clerk/clerk-expo";
+import { tokenCache } from "@clerk/clerk-expo/token-cache";
 
 export const unstable_settings = {
   // anchor: "(tabs)",
 };
 SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
+
   const [loaded] = useFonts({
     "Jakarta-Bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
     "Jakarta-ExtraBold": require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
@@ -28,22 +30,26 @@ export default function RootLayout() {
     }, 1500); // wait 1.5s before hiding
   }, [loaded]);
 
-  if (Platform.OS === "web") {
-    <Redirect href="/(auth)/welcome" />;
-    // Web layout
-    // return (
-    //   <View style={{ flex: 1 }}>
-    //     <Text>Web Layout </Text>
-    //   </View>
-    // );
-  }
+  // if (Platform.OS === "web") {
+  //   <ClerkProvider tokenCache={tokenCache}>
+  //     <Redirect href="/(auth)/welcome" />;
+  //   </ClerkProvider>;
+  //   // Web layout
+  //   // return (
+  //   //   <View style={{ flex: 1 }}>
+  //   //     <Text>Web Layout </Text>
+  //   //   </View>
+  //   // );
+  // }
 
   // Mobile layout
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(root)" options={{ headerShown: false }} />
-    </Stack>
+    <ClerkProvider tokenCache={tokenCache}>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(root)" options={{ headerShown: false }} />
+      </Stack>
+    </ClerkProvider>
   );
 }
