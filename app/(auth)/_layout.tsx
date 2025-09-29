@@ -4,7 +4,7 @@ import { Text } from "react-native";
 
 const Layout = () => {
   const { isSignedIn } = useAuth();
-  console.log(isSignedIn, "isSignedIn");
+
   if (isSignedIn) {
     return <Redirect href="/(root)/(tabs)/home" />;
   }

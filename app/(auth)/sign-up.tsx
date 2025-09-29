@@ -2,6 +2,7 @@ import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
+import { fetchAPI } from "@/lib/fetch";
 import { useSignUp } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
@@ -23,7 +24,7 @@ const SignUp = () => {
 
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -49,7 +50,7 @@ const SignUp = () => {
         state: "pending",
       });
     } catch (err: any) {
-      console.log(JSON.stringify(err, null, 2));
+      console.error(JSON.stringify(err, null, 2));
       Alert.alert("Error", err.errors[0].longMessage);
     }
   };
@@ -61,14 +62,14 @@ const SignUp = () => {
         code: verification.code,
       });
       if (completeSignUp.status === "complete") {
-        // await fetchAPI("/(api)/user", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     name: form.name,
-        //     email: form.email,
-        //     clerkId: completeSignUp.createdUserId,
-        //   }),
-        // });
+        await fetchAPI("/(api)/user", {
+          method: "POST",
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            clerkId: completeSignUp.createdUserId,
+          }),
+        });
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({
           ...verification,
@@ -161,9 +162,10 @@ const SignUp = () => {
             </View>
 
             {/* verification modal */}
-            <ReactNativeModal isVisible={verification.state === "pending"}
-              onModalHide={()=>{
-                  if(verification.state === 'success') setShowSuccessModal(true)
+            <ReactNativeModal
+              isVisible={verification.state === "pending"}
+              onModalHide={() => {
+                if (verification.state === "success") setShowSuccessModal(true);
               }}
             >
               <View className="bg-white px-7 py-9 min-h-[300px] rounded-lg">
