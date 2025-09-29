@@ -13,7 +13,6 @@ export const unstable_settings = {
 };
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
-
   const [loaded] = useFonts({
     "Jakarta-Bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
     "Jakarta-ExtraBold": require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
@@ -29,18 +28,6 @@ export default function RootLayout() {
       if (loaded) SplashScreen.hideAsync();
     }, 1500); // wait 1.5s before hiding
   }, [loaded]);
-
-  // if (Platform.OS === "web") {
-  //   <ClerkProvider tokenCache={tokenCache}>
-  //     <Redirect href="/(auth)/welcome" />;
-  //   </ClerkProvider>;
-  //   // Web layout
-  //   // return (
-  //   //   <View style={{ flex: 1 }}>
-  //   //     <Text>Web Layout </Text>
-  //   //   </View>
-  //   // );
-  // }
 
   // Mobile layout
   return (

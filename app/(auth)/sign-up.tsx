@@ -23,16 +23,19 @@ const SignUp = () => {
 
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
   });
+
   const [verification, setVerification] = useState({
     state: "default",
     error: "",
     code: "",
   });
+
   const onSignupPress = async () => {
     if (!isLoaded) return;
     try {
@@ -46,12 +49,11 @@ const SignUp = () => {
         state: "pending",
       });
     } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
       console.log(JSON.stringify(err, null, 2));
       Alert.alert("Error", err.errors[0].longMessage);
     }
   };
+
   const onVerifyPress = async () => {
     if (!isLoaded) return;
     try {
@@ -159,7 +161,11 @@ const SignUp = () => {
             </View>
 
             {/* verification modal */}
-            <ReactNativeModal isVisible={verification.state === "pending"}>
+            <ReactNativeModal isVisible={verification.state === "pending"}
+              onModalHide={()=>{
+                  if(verification.state === 'success') setShowSuccessModal(true)
+              }}
+            >
               <View className="bg-white px-7 py-9 min-h-[300px] rounded-lg">
                 <Text className="text-2xl font-JakartaExtraBold mb-2">
                   Verification
